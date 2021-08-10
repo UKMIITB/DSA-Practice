@@ -50,3 +50,35 @@ ListNode *reverseList(ListNode *head)
 
     return pre;
 }
+
+//using function call
+void customReverse(ListNode **start, ListNode **end)
+{
+    ListNode *prev = NULL;
+    ListNode *current = *start;
+    ListNode *next = NULL;
+
+    while (current != *end)
+    {
+        next = current->next;
+        current->next = prev;
+
+        // updating
+        prev = current;
+        current = next;
+    }
+    current->next = prev;
+}
+
+ListNode *reverseList(ListNode *head)
+{
+    if (head == NULL || head->next == NULL)
+        return head;
+
+    ListNode *end = head;
+    while (end->next != NULL)
+        end = end->next;
+
+    customReverse(&head, &end);
+    return end;
+}
