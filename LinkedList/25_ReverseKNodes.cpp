@@ -35,7 +35,7 @@ ListNode *reverseKGroup(ListNode *head, int k)
         return head;
 
     ListNode *dummy = new ListNode(0);
-    ListNode *updatedHead = dummy->next;
+    ListNode *updatedHead = NULL;
 
     ListNode *current = head;
     ListNode *start = head;
@@ -51,6 +51,10 @@ ListNode *reverseKGroup(ListNode *head, int k)
             customReverse(&start, &end);
 
             dummy->next = end;
+
+            if (updatedHead == NULL) // storing final head to be returned
+                updatedHead = dummy->next;
+
             dummy = start;
             start = current;
             count = 1;
@@ -62,6 +66,9 @@ ListNode *reverseKGroup(ListNode *head, int k)
         }
     }
 
+    if (count != 1) // last few nodes which are not multiples of k
+        dummy->next = start;
+
     return updatedHead;
 }
 
@@ -71,6 +78,8 @@ int main()
     head->next = new ListNode(2);
     head->next->next = new ListNode(3);
     head->next->next->next = new ListNode(4);
+    head->next->next->next->next = new ListNode(5);
+
     ListNode *reverseHead = reverseKGroup(head, 2);
 
     while (reverseHead != NULL)
