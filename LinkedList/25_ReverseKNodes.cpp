@@ -29,11 +29,6 @@ void customReverse(ListNode **start, ListNode **end)
     current->next = prev;
 }
 
-int main()
-{
-    return 0;
-}
-
 ListNode *reverseKGroup(ListNode *head, int k)
 {
     if (head == NULL || k == 1)
@@ -51,19 +46,38 @@ ListNode *reverseKGroup(ListNode *head, int k)
     {
         if (count == k)
         {
-            end = current;           // till here reversing would be done
+            end = current;           // till end reversing would be done
             current = current->next; // move to end + 1
             customReverse(&start, &end);
 
             dummy->next = end;
             dummy = start;
             start = current;
+            count = 1;
         }
         else
         {
             current = current->next;
+            count++;
         }
     }
 
     return updatedHead;
+}
+
+int main()
+{
+    ListNode *head = new ListNode(1);
+    head->next = new ListNode(2);
+    head->next->next = new ListNode(3);
+    head->next->next->next = new ListNode(4);
+    ListNode *reverseHead = reverseKGroup(head, 2);
+
+    while (reverseHead != NULL)
+    {
+        cout << reverseHead->val << endl;
+        reverseHead = reverseHead->next;
+    }
+
+    return 0;
 }
