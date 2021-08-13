@@ -60,9 +60,9 @@ ListNode *mergeKLists(vector<ListNode *> &lists)
 
 struct compare
 {
-    bool operator()(ListNode *&node1, ListNode *&node2)
+    bool operator()(int val1, int val2)
     {
-        return node1->val < node2->val;
+        return val1 > val2;
     }
 };
 
@@ -73,21 +73,21 @@ ListNode *mergeKLists(vector<ListNode *> &lists)
     ListNode *current = dummy;
     ListNode *iterateHead = NULL;
 
-    priority_queue<ListNode *, vector<ListNode *>, compare> pq;
+    priority_queue<int, vector<int>, compare> pq;
 
     for (int i = 0; i < lists.size(); i++)
     {
         iterateHead = lists[i];
         while (iterateHead != NULL)
         {
-            pq.push(iterateHead);
+            pq.push(iterateHead->val);
             iterateHead = iterateHead->next;
         }
     }
 
     while (!pq.empty())
     {
-        current->next = pq.top();
+        current->next = new ListNode(pq.top());
         pq.pop();
         current = current->next;
     }
