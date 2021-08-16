@@ -42,9 +42,60 @@ ListNode *insertionSortList(ListNode *head)
     return dummy->next;
 }
 
+void placeCurrentAtCorrectPosition(ListNode **head, ListNode **swapCurrent)
+{
+    ListNode *itr = *head;
+    ListNode *prev = NULL;
+    int index = 0;
+
+    while (itr != *swapCurrent)
+    {
+        if ((*swapCurrent)->val < itr->val)
+        {
+            if (index == 0) // this is new head
+            {
+                (*swapCurrent)->next = *head;
+                *head = *swapCurrent;
+            }
+            else
+            {
+                prev->next = *swapCurrent;
+                (*swapCurrent)->next = itr;
+            }
+            break;
+        }
+        prev = itr;
+        itr = itr->next;
+
+        index++;
+    }
+}
+
 // actual insertion sort
 ListNode *insertionSortList(ListNode *head)
 {
+    if (head == NULL || head->next == NULL)
+        return head;
+
+    ListNode *prev = head;
+    ListNode *current = head->next;
+
+    while (current != NULL)
+    {
+        if (current->val < prev->val)
+        {
+            ListNode *swapCurrent = current;
+            current = current->next;
+            placeCurrentAtCorrectPosition(&head, &swapCurrent);
+            prev->next = current;
+        }
+        else
+        {
+            current = current->next;
+            prev = prev->next;
+        }
+    }
+    return head;
 }
 
 int main()
